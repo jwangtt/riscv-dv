@@ -17,9 +17,6 @@
 
 class riscv_b_instr extends riscv_instr;
 
-  rand riscv_reg_t rs3;
-  bit has_rs3 = 1'b0;
-
   `uvm_object_utils(riscv_b_instr)
 
   function new(string name = "");
@@ -28,7 +25,6 @@ class riscv_b_instr extends riscv_instr;
 
   virtual function void set_rand_mode();
     super.set_rand_mode();
-    has_rs3 = 1'b0;
     case (format) inside
       R_FORMAT: begin
         if (instr_name inside {BMATFLIP,
@@ -50,12 +46,6 @@ class riscv_b_instr extends riscv_instr;
     endcase
 
   endfunction
-
-  function void pre_randomize();
-    super.pre_randomize();
-    rs3.rand_mode(has_rs3);
-  endfunction
-
 
   virtual function void set_imm_len();
 
@@ -327,14 +317,6 @@ class riscv_b_instr extends riscv_instr;
     endcase
     return {prefix, binary};
   endfunction
-
-  virtual function void do_copy(uvm_object rhs);
-    riscv_b_instr rhs_;
-    super.copy(rhs);
-    assert($cast(rhs_, rhs));
-    this.rs3 = rhs_.rs3;
-    this.has_rs3 = rhs_.has_rs3;
-  endfunction : do_copy
 
   virtual function bit is_supported(riscv_instr_gen_config cfg);
     return cfg.enable_b_extension && (

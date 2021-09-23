@@ -72,7 +72,7 @@
     rd_sign = get_operand_sign(rd_value);
     fs1_sign = get_operand_sign(fs1_value);
     fs2_sign = get_operand_sign(fs2_value);
-    fs3_sign = get_operand_sign(fs2_value);
+    fs3_sign = get_operand_sign(fs3_value);
     fd_sign = get_operand_sign(fd_value);
     imm_sign = get_imm_sign(imm);
     rs1_special_val = get_operand_special_val(rs1_value);
@@ -337,8 +337,8 @@
         rs1_value = get_gpr_state(operands[1]);
         rs2 = get_gpr(operands[2]);
         rs2_value = get_gpr_state(operands[2]);
-        rs2 = get_gpr(operands[3]);
-        rs2_value = get_gpr_state(operands[3]);
+        rs3 = get_gpr(operands[3]);
+        rs3_value = get_gpr_state(operands[3]);
       end
       CI_FORMAT, CIW_FORMAT: begin
         if (instr_name == C_ADDI16SP) begin

@@ -44,6 +44,7 @@ class riscv_instr extends uvm_object;
 
   // Operands
   rand bit [11:0]            csr;
+  rand riscv_reg_t           rs3;
   rand riscv_reg_t           rs2;
   rand riscv_reg_t           rs1;
   rand riscv_reg_t           rd;
@@ -67,6 +68,7 @@ class riscv_instr extends uvm_object;
   int                        idx = -1;
   bit                        has_rs1 = 1'b1;
   bit                        has_rs2 = 1'b1;
+  bit                        has_rs3 = 1'b0;
   bit                        has_rd = 1'b1;
   bit                        has_imm = 1'b1;
 
@@ -310,6 +312,7 @@ class riscv_instr extends uvm_object;
 
   // Disable the rand mode for unused operands to randomization performance
   virtual function void set_rand_mode();
+    has_rs3 = 1'b0;
     case (format) inside
       R_FORMAT : has_imm = 1'b0;
       I_FORMAT : has_rs2 = 1'b0;
@@ -330,6 +333,7 @@ class riscv_instr extends uvm_object;
   function void pre_randomize();
     rs1.rand_mode(has_rs1);
     rs2.rand_mode(has_rs2);
+    rs3.rand_mode(has_rs3);
     rd.rand_mode(has_rd);
     imm.rand_mode(has_imm);
     if (category != CSR) begin
@@ -650,6 +654,7 @@ class riscv_instr extends uvm_object;
     this.format         = rhs_.format;
     this.category       = rhs_.category;
     this.instr_name     = rhs_.instr_name;
+    this.rs3            = rhs_.rs3;
     this.rs2            = rhs_.rs2;
     this.rs1            = rhs_.rs1;
     this.rd             = rhs_.rd;
@@ -660,6 +665,7 @@ class riscv_instr extends uvm_object;
     this.imm_str        = rhs_.imm_str;
     this.imm_mask       = rhs_.imm_mask;
     this.is_compressed  = rhs_.is_compressed;
+    this.has_rs3        = rhs_.has_rs3;
     this.has_rs2        = rhs_.has_rs2;
     this.has_rs1        = rhs_.has_rs1;
     this.has_rd         = rhs_.has_rd;
